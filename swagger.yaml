@@ -1,0 +1,935 @@
+tags:
+  - name: users
+    description: users API
+  - name: auth
+    description: auth API
+  - name: products
+    description: products API
+  - name: categories
+    description: categories API
+  - name: general
+    description: general API
+
+paths:
+  /users:
+    # [GET] users
+    get:
+      tags:
+        - users
+      summary: Find All Users
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+    # [POST] users
+    post:
+      tags:
+        - users
+      summary: Add User
+      security:
+        - JWT: []
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateUsersDto'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /users/profile:
+    get:
+      tags:
+        - users
+      summary: Get User Profile
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+    put:
+      tags:
+        - users
+      summary: Update User Profile
+      security:
+        - JWT: []
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateUserDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [GET] users/id
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Find User By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: User Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+    # [PUT] users/id
+    put:
+      tags:
+        - users
+      summary: Update User By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: user Id
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateUserDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+    # [DELETE] users/id
+    delete:
+      tags:
+        - users
+      summary: Delete User By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: user Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /users/change-password:
+    patch:
+      tags:
+        - users
+      summary: Change User Password
+      security:
+        - JWT: []
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/ChangePasswordDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /users/change-status/{id}/{isActive}:
+    patch:
+      tags:
+        - users
+      summary: Change User Status
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          type: integer
+        - name: isActive
+          in: path
+          description: user status
+          type: enum
+          enum:
+            - 1
+            - 0
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [POST] signup
+  /auth/signup:
+    post:
+      tags:
+        - auth
+      summary: Signup
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateUsersDto'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [POST] login
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/LoginDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [GET] user route
+  /auth/user:
+    get:
+      tags:
+        - auth
+      summary: user route for authorization testing
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  # [GET] admin route
+  /auth/admin:
+    get:
+      security:
+        - JWT: []
+      tags:
+        - auth
+      summary: admin route for authorization testing
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  # [GET] products
+  /products:
+    get:
+      tags:
+        - products
+      summary: Find All Products
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+    # [POST] products
+    post:
+      tags:
+        - products
+      summary: Add Product
+      security:
+        - JWT: []
+      parameters:
+        - name: body
+          in: body
+          description: product data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateProductDto'
+
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [GET] products/id
+  /products/{id}:
+    get:
+      tags:
+        - products
+      summary: Find Product By Id
+      parameters:
+        - name: id
+          in: path
+          description: product Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+    # [PUT] products/id
+    put:
+      tags:
+        - products
+      summary: Update Product By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: product Id
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: product Data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateProductDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+    # [DELETE] products/id
+    delete:
+      tags:
+        - products
+      summary: Delete Product By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: product Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /products/search:
+    get:
+      tags:
+        - products
+      summary: Search Product By Name
+      parameters:
+        - name: keyword
+          in: query
+          description: product name
+          required: true
+          type: string
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /orders:
+    # [GET] orders
+    get:
+      tags:
+        - orders
+      summary: Find All Orders
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+    # [POST] orders
+    post:
+      tags:
+        - orders
+      summary: Add Order
+      security:
+        - JWT: []
+      parameters:
+        - name: body
+          in: body
+          description: order data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateOrderDto'
+
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /orders/{id}:
+    put:
+      tags:
+        - orders
+      summary: Update Order By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: order Id
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: order Data
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateOrderDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+    delete:
+      tags:
+        - orders
+      summary: Delete Order By Id
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: order Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [GET] reviews
+  /reviews:
+    # [POST] reviews
+    post:
+      tags:
+        - reviews
+      summary: Add Review
+      security:
+        - JWT: []
+      parameters:
+        - name: body
+          in: body
+          description: review data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateReviewDto'
+
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  # [GET] reviews/id
+  /reviews/{id}:
+    get:
+      tags:
+        - reviews
+      summary: Get reviews by product id
+      parameters:
+        - name: id
+          in: path
+          description: product Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+    # [PUT] reviews/id
+    put:
+      tags:
+        - reviews
+      summary: Update Review By Id
+      parameters:
+        - name: id
+          in: path
+          description: review Id
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: review Data
+          required: true
+          schema:
+            $ref: '#/definitions/CreateReviewDto'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+      # [DELETE] reviews/id
+      delete:
+        tags:
+          - reviews
+        summary: Delete Review By Id
+        parameters:
+          - name: id
+            in: path
+            description: review Id
+            required: true
+            type: integer
+        responses:
+          200:
+            description: 'OK'
+          409:
+            description: 'Conflict'
+          500:
+            description: 'Server Error'
+
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: Find All Categories
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  /brands:
+    get:
+      tags:
+        - brands
+      summary: Find All Brands
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  #[GET] order-item/id
+  /order-items/{id}:
+    get:
+      tags:
+        - order-items
+      summary: Find order-item By Id
+      parameters:
+        - name: id
+          in: path
+          description: product Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /general/statistics:
+    get:
+      tags:
+        - general
+      summary: general statistics
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /general/revenue-by-category:
+    get:
+      tags:
+        - general
+      summary: revenue by category
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /general/order-in-timeline:
+    get:
+      tags:
+        - general
+      summary: order in timeline
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  CreateUsersDto:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: user Email
+      password:
+        type: string
+        description: user Password
+      fullname:
+        type: string
+        description: user Fullname
+      phone:
+        type: string
+        description: user Phone
+      dob:
+        type: string
+        description: user's date of birth
+    example:
+      email: 'email.example.com@mail.vn'
+      password: '123456'
+      fullname: 'Example Fullname'
+      phone: '0123456789'
+      dob: '01/01/2000'
+
+  UpdateUserDto:
+    type: object
+    properties:
+      fullname:
+        type: string
+        description: user Fullname
+      phone:
+        type: string
+        description: user Phone
+      dob:
+        type: string
+        description: user's date of birth
+      avatar:
+        type: string
+        description: user's avatar
+    example:
+      fullname: 'Example Fullname'
+      phone: '0123456789'
+      dob: '01/01/2000'
+      avatar: 'https://example.com/avatar.png'
+
+  LoginDto:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: user Email
+      password:
+        type: string
+        description: user Password
+
+  CreateProductDto:
+    type: object
+    required:
+
+    properties:
+      name:
+        type: string
+        description: product Name
+      desc:
+        type: string
+        description: product Description
+      price:
+        type: number
+        description: product Price
+      status:
+        type: string
+        enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          - DELIVERED
+          - RETURNED
+          - PAID
+          - UNPAID
+        description: product status
+      brandName:
+        type: string
+        description: product Brandname
+      categories_id:
+        type: string
+        description: product CategoriesId
+      quantity:
+        type: number
+        description: product Quantity
+      sold:
+        type: number
+        description: product SoldNumber
+      images:
+        type: array
+        items:
+          type: string
+        description: product Image
+
+    example:
+      name: 'Example Product'
+      desc: 'Example Description'
+      price: 19.99
+      status: 'PENDING'
+      brandName: 'Example Brand'
+      categoryId: 1
+      quantity: 10
+      sold: 0
+      images:
+        - 'https://example.com/image1.jpg'
+        - 'https://example.com/image2.jpg'
+
+  CreateOrderDto:
+    type: object
+    required:
+    properties:
+      receiptAddress:
+        type: string
+        description: order receipt address
+
+      receiptName:
+        type: string
+        description: order receipt name
+
+      receiptPhone:
+        type: string
+        description: order receipt phone
+
+      products:
+        type: array
+        items:
+          type: object
+          required:
+            - productId
+            - quantity
+          properties:
+            productId:
+              type: string
+              description: product id
+            quantity:
+              type: number
+              description: product Quantity
+      status:
+        type: string
+        enum:
+          - PENDING
+          - CANCELLED
+          - DELIVERED
+        description: order status
+
+    example:
+      receiptAddress: 'Example Address'
+      receiptName: 'Example Name'
+      receiptPhone: '0123456789'
+      status: 'PENDING'
+      products:
+        - productId: 1
+          quantity: 1
+        - productId: 2
+          quantity: 2
+        - productId: 3
+          quantity: 4
+
+  UpdateOrderDto:
+    type: object
+    required:
+    properties:
+      receiptAddress:
+        type: string
+        description: order receipt address
+      receiptName:
+        type: string
+        description: order receipt name
+      receiptPhone:
+        type: string
+        description: order receipt phone
+      status:
+        type: string
+        enum:
+          - PENDING
+          - CANCELLED
+          - DELIVERED
+        description: order status
+
+    example:
+      receiptAddress: 'Example Address'
+      receiptName: 'Example Name'
+      receiptPhone: '0123456789'
+      status: 'CANCELLED'
+
+  CreateReviewDto:
+    type: object
+    required:
+    properties:
+      content:
+        type: string
+        description: review content
+      rating:
+        type: number
+        description: review rating
+      productId:
+        type: number
+        description: product Id
+    example:
+      content: 'Example conent'
+      rating: 5
+      productId: 1
+
+  ChangePasswordDto:
+    type: object
+    required:
+      - oldPassword
+      - newPassword
+    properties:
+      oldPassword:
+        type: string
+        description: user Old Password
+      newPassword:
+        type: string
+        description: user New Password
+    example:
+      oldPassword: '123456'
+      newPassword: '654321'
+
+  CreateOrderItemDto:
+    type: object
+    required:
+    properties:
+      content:
+        type: string
+        description: review content
+      rating:
+        type: number
+        description: review rating
+      productId:
+        type: number
+        description: product Id
+    example:
+      content: 'Example conent'
+      rating: 5
+      productId: 1
+
+securityDefinitions:
+  JWT:
+    type: apiKey
+    name: Authorization
+    in: header
+    scheme: bearer
+    description: Bearer Token
+
+schemes:
+  - https
+  - http
