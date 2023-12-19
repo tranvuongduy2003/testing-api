@@ -58,9 +58,7 @@ export class App {
 
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream })); // logging
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS })); // security
-    this.app.use(hpp()); // security
-    this.app.use(helmet()); // security
+    this.app.use(cors()); // security
     this.app.use(compression()); // performance
     this.app.use(express.json()); // parsing json request payload to body
     this.app.use(express.urlencoded({ extended: true })); // parsing urlencoded request payload to body
