@@ -1,5 +1,4 @@
 import { App } from '@/app';
-import { TEST_TOKEN } from '@config';
 import { DB } from '@database';
 import { Role } from '@/interfaces/auth.interface';
 import { AuthRoute } from '@/routes/auth.route';
@@ -7,6 +6,7 @@ import { UserRoute } from '@/routes/users.route';
 import bcrypt from 'bcrypt';
 import { Sequelize } from 'sequelize';
 import request from 'supertest';
+import { TEST_TOKEN } from '@/config';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -53,8 +53,10 @@ describe('Testing Users', () => {
       ]);
 
       (Sequelize as any).authenticate = jest.fn();
+
       const app = new App([authRoute, usersRoute]);
-      request(app.getServer()).get(${usersRoute.path}).set('Authorization', Bearer ${token}).expect(200);
-    })
+      return await request(app.getServer()).get(`${usersRoute.path}`).set('Authorization', Bearer ${TEST_TOKEN}).expect(200);
+
+    });
   });
 });
