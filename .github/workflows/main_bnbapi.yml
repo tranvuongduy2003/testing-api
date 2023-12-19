@@ -26,6 +26,21 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        env:
+          PORT: ${{ secrets.PORT }}
+          HOST_NAME: ${{ secrets.HOST_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          LOG_FORMAT: ${{ secrets.LOG_FORMAT }}
+          LOG_DIR: ${{ secrets.LOG_DIR }}
+          TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+          ORIGIN: ${{ secrets.ORIGIN }}
+          CREDENTIALS: ${{ secrets.CREDENTIALS }}
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -42,7 +57,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
@@ -51,7 +66,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
