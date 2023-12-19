@@ -38,7 +38,7 @@ jobs:
           envkey_TEST_TOKEN: ${{ env.TEST_TOKEN }}
           envkey_ORIGIN: ${{ env.ORIGIN }}
           envkey_CREDENTIALS: ${{ env.CREDENTIALS }}
-          file_name: .env
+          file_name: .env.test
 
       - name: npm install, build, and test
         run: |
