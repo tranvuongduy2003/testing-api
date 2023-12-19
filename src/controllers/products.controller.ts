@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
-import { Container } from 'typedi';
-import { CreateProductDto } from '@/dtos/products.dto';
+import { CreateProductDto, UpdateProductDto } from '@/dtos/products.dto';
 import { Product } from '@interfaces/products.interface';
 import { ProductService } from '@services/products.service';
+import { NextFunction, Request, Response } from 'express';
+import { Container } from 'typedi';
 
 export class ProductController {
   public product = Container.get(ProductService);
@@ -42,7 +42,7 @@ export class ProductController {
   public updateProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productId = Number(req.params.id);
-      const productData: CreateProductDto = req.body;
+      const productData: UpdateProductDto = req.body;
       const updateProductData: Product = await this.product.updateProduct(productId, productData);
 
       res.status(200).json({ data: updateProductData, message: 'updated' });

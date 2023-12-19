@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import { NODE_ENV, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PASS } from '@config';
+import { NODE_ENV, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PASS } from '@/config';
 import UserModel from '@/models/users.model';
 import OrderModel from '@/models/orders.model';
 import ProductModel from '@/models/products.model';
@@ -36,12 +36,7 @@ const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASS, {
   },
   benchmark: true,
   attributeBehavior: 'unsafe-legacy',
-
-  dialectOptions: {
-    ssl: {
-      ca: readFileSync(join(__dirname, 'DigiCertGlobalRootCA.crt.pem')).toString(),
-    },
-  },
+  ssl: false,
 });
 
 sequelize.authenticate();

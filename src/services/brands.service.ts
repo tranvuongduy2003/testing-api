@@ -9,9 +9,9 @@ export class BrandService {
     return brands;
   }
 
-  public async createBrand(name: string, desc: string) {
+  public async createBrand(name: string) {
     const { Brands } = DB;
-    const brand = await Brands.create({ name, desc });
+    const brand = await Brands.create({ name });
     return brand;
   }
 }

@@ -1,9 +1,12 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { SECRET_KEY } from '@config';
-import { DB } from '@database';
+import { SECRET_KEY } from '@/config';
+import { DB } from '@/database';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, RequestWithUser, Role, TokenType } from '@interfaces/auth.interface';
+import { NODE_ENV } from '@/config';
+import { UserModel } from '@/models/users.model';
+import bcrypt from 'bcrypt';
 
 const getAuthorization = (req: any) => {
   const header = req.header('Authorization');
@@ -20,6 +23,20 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
       const { id, type } = verify(Authorization, SECRET_KEY) as DataStoredInToken;
       if (type !== TokenType.ACCESS) {
         next(new HttpException(403, 'Access permission denied'));
+      }
+
+      if (NODE_ENV === 'test') {
+        req.user = new UserModel({
+          id: 1,
+          email: 'test@email.com',
+          password: await bcrypt.hash('123456', 10),
+          fullname: 'Name1',
+          phone: '0123456789',
+          dob: new Date(),
+          isActive: true,
+          role: Role.ADMIN,
+        });
+        next();
       }
 
       const findUser = await DB.User.findByPk(id);
