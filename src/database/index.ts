@@ -36,7 +36,11 @@ const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASS, {
   },
   benchmark: true,
   attributeBehavior: 'unsafe-legacy',
-  ssl: false,
+  dialectOptions: {
+    ssl: {
+      ca: readFileSync(join(__dirname, 'DigiCertGlobalRootCA.crt.pem')).toString(),
+    },
+  },
 });
 
 sequelize.authenticate();
