@@ -22,10 +22,6 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
         env:
           PORT: ${{ env.PORT }}
           HOST_NAME: ${{ env.HOST_NAME }}
@@ -41,6 +37,10 @@ jobs:
           TEST_TOKEN: ${{ env.TEST_TOKEN }}
           ORIGIN: ${{ env.ORIGIN }}
           CREDENTIALS: ${{ env.CREDENTIALS }}
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
