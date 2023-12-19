@@ -1,12 +1,11 @@
 import { App } from '@/app';
-import { DB } from '@database';
+import { TEST_TOKEN } from '@/config';
+import { DB } from '@/database';
 import { Role } from '@/interfaces/auth.interface';
-import { AuthRoute } from '@/routes/auth.route';
 import { UserRoute } from '@/routes/users.route';
 import bcrypt from 'bcrypt';
 import { Sequelize } from 'sequelize';
 import request from 'supertest';
-import { TEST_TOKEN } from '@/config';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -16,7 +15,6 @@ describe('Testing Users', () => {
   describe('[GET] /users', () => {
     it('response findAll users', async () => {
       const usersRoute = new UserRoute();
-      const authRoute = new AuthRoute();
       const { User } = DB;
 
       User.findAll = jest.fn().mockReturnValue([
@@ -53,10 +51,8 @@ describe('Testing Users', () => {
       ]);
 
       (Sequelize as any).authenticate = jest.fn();
-
-      const app = new App([authRoute, usersRoute]);
-      return await request(app.getServer()).get(`${usersRoute.path}`).set('Authorization', Bearer ${TEST_TOKEN}).expect(200);
-
+      const app = new App([usersRoute]);
+      return await request(app.getServer()).get(`${usersRoute.path}`).set('Authorization', `Bearer ${TEST_TOKEN}`).expect(200);
     });
   });
 });

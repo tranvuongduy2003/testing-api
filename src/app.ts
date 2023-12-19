@@ -1,5 +1,5 @@
-import { CREDENTIALS, HOST_NAME, LOG_FORMAT, NODE_ENV, ORIGIN, PORT } from '@config';
-import { DB } from '@database';
+import { HOST_NAME, LOG_FORMAT, NODE_ENV, PORT } from '@/config';
+import { DB } from '@/database';
 import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
@@ -7,8 +7,6 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import helmet from 'helmet';
-import hpp from 'hpp';
 import morgan from 'morgan';
 import 'reflect-metadata';
 import swaggerJSDoc from 'swagger-jsdoc';

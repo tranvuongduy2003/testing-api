@@ -1,12 +1,12 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { SECRET_KEY } from '@config';
-import { DB } from '@database';
-import { NODE_ENV } from '@config';
-import bcrypt from 'bcrypt';
-import { UserModel } from '@/models/users.model';
+import { SECRET_KEY } from '@/config';
+import { DB } from '@/database';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, RequestWithUser, Role, TokenType } from '@interfaces/auth.interface';
+import { NODE_ENV } from '@/config';
+import { UserModel } from '@/models/users.model';
+import bcrypt from 'bcrypt';
 
 const getAuthorization = (req: any) => {
   const header = req.header('Authorization');
