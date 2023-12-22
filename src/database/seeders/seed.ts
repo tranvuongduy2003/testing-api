@@ -96,6 +96,39 @@ class Seeder {
         creationPromises.push(this.userService.createUser(newUser));
       }
 
+      creationPromises.push(
+        this.userService.createUser({
+          fullname: faker.person.fullName(),
+          email: 'admin@test.com',
+          password: 'Admin*123',
+          phone: faker.phone.number('+84 ## ### ## ##'),
+          dob: faker.date.past(),
+          role: Role.ADMIN,
+        }),
+      );
+
+      creationPromises.push(
+        this.userService.createUser({
+          fullname: faker.person.fullName(),
+          email: 'customer@test.com',
+          password: 'Customer*123',
+          phone: faker.phone.number('+84 ## ### ## ##'),
+          dob: faker.date.past(),
+          role: Role.CUSTOMER,
+        }),
+      );
+
+      creationPromises.push(
+        this.userService.createUser({
+          fullname: faker.person.fullName(),
+          email: 'deliverer@test.com',
+          password: 'Deliverer*123',
+          phone: faker.phone.number('+84 ## ### ## ##'),
+          dob: faker.date.past(),
+          role: Role.DELIVERER,
+        }),
+      );
+
       await Promise.all(creationPromises);
       logger.info('User seeding successfully!');
     } catch (error) {
