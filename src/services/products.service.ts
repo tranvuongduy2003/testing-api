@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { DB } from '@/database';
+import { DB } from '@database';
 import { CreateProductDto, UpdateProductDto } from '@/dtos/products.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { Product } from '@interfaces/products.interface';
@@ -12,7 +12,7 @@ export class ProductService {
         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'importPrice'],
         include: [
           [
-            DB.Sequelize.literal(`(SELECT AVG(r.rating)
+            DB.Sequelize.literal(`(SELECT AVG(r.rating) 
               FROM reviews r
               WHERE r.product_id = ProductModel.id)
             `),
@@ -89,7 +89,7 @@ export class ProductService {
         include: [
           [
             DB.Sequelize.literal(`
-              (SELECT AVG(r.rating)
+              (SELECT AVG(r.rating) 
               FROM reviews r
               WHERE r.product_id = ProductModel.id)
             `),

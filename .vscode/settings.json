@@ -1,6 +1,6 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": true
   },
   "editor.formatOnSave": false,
   "appService.defaultWebAppToDeploy": "/subscriptions/ebeb99c2-70ac-44ef-a20e-65575be1eb35/resourceGroups/bnb/providers/Microsoft.Web/sites/bnb-ecommerce",

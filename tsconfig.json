@@ -22,9 +22,9 @@
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"],
-      "@config/*": ["config/*"],
+      "@config": ["config"],
       "@controllers/*": ["controllers/*"],
-      "@database/*": ["database/*"],
+      "@database": ["database"],
       "@dtos/*": ["dtos/*"],
       "@exceptions/*": ["exceptions/*"],
       "@interfaces/*": ["interfaces/*"],

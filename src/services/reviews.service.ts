@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { DB } from '@/database';
+import { DB } from '@database';
 import { CreateReviewDto } from '@/dtos/reviews.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { Reviews } from '@interfaces/reviews.interface';
@@ -30,7 +30,7 @@ export class ReviewService {
         [DB.Sequelize.fn('floor', DB.Sequelize.col('rating')), 'level'],
         [
           DB.Sequelize.literal(`round(
-          count(*) /
+          count(*) / 
           (select count(*) from reviews r2 where r2.product_id = ${productId})
           ,2)`),
           'percents',

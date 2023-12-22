@@ -1,19 +1,20 @@
-import { CreateOrderDto, ProductItem } from '@/dtos/orders.dto';
-import { CreateProductDto } from '@/dtos/products.dto';
-import { CreateReviewDto } from '@/dtos/reviews.dto';
+import { logger } from '@/utils/logger';
+import { DB } from '..';
+import { UserService } from '@/services/users.service';
+import { User } from '@/interfaces/users.interface';
+import { faker } from '@faker-js/faker';
 import { CreateUserDto } from '@/dtos/users.dto';
+import { Product } from '@/interfaces/products.interface';
+import { CreateProductDto } from '@/dtos/products.dto';
+import { ProductService } from '@/services/products.service';
+import { OrderService } from '@/services/orders.service';
+import { CreateOrderDto, ProductItem } from '@/dtos/orders.dto';
+import { ReviewService } from '@/services/reviews.service';
+import { CreateReviewDto } from '@/dtos/reviews.dto';
+import { CategoryService } from '@/services/categories.service';
 import { Role } from '@/interfaces/auth.interface';
 import { OrderStatus } from '@/interfaces/orders.interface';
-import { User } from '@/interfaces/users.interface';
-import { CategoryService } from '@/services/categories.service';
-import { OrderService } from '@/services/orders.service';
-import { ProductService } from '@/services/products.service';
-import { ReviewService } from '@/services/reviews.service';
-import { UserService } from '@/services/users.service';
-import { logger } from '@/utils/logger';
-import { faker } from '@faker-js/faker';
 import moment from 'moment-timezone';
-import { DB } from '..';
 import { COSMETIC_IMG, PERFUME_IMG } from './constant-urls';
 
 interface SeedAmount {
