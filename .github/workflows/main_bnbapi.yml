@@ -59,5 +59,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'bnbapi'
-          package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2899E4C07C944810B0DB34DF1C3BE938 }}
