@@ -23,7 +23,6 @@ export class AuthController {
   public logIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: CreateUserDto = req.body;
-      console.log(req.body);
       const { token, findUser } = await this.auth.login(userData);
 
       // res.setHeader('Set-Cookie', [cookie]);

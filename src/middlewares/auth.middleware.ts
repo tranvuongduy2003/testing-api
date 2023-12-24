@@ -16,35 +16,36 @@ const getAuthorization = (req: any) => {
 };
 
 export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  //Kiem tra token
   try {
     const Authorization = getAuthorization(req);
-
     if (Authorization) {
       const { id, type } = verify(Authorization, SECRET_KEY) as DataStoredInToken;
       if (type !== TokenType.ACCESS) {
         next(new HttpException(403, 'Access permission denied'));
       }
 
-      if (NODE_ENV === 'test') {
-        req.user = new UserModel({
-          id: 1,
-          email: 'test@email.com',
-          password: await bcrypt.hash('123456', 10),
-          fullname: 'Name1',
-          phone: '0123456789',
-          dob: new Date(),
-          isActive: true,
-          role: Role.ADMIN,
-        });
-        next();
-      }
-
+      // if (NODE_ENV === 'test') {
+      //   req.user = new UserModel({
+      //     id: 1,
+      //     email: 'test@email.com',
+      //     password: await bcrypt.hash('123456', 10),
+      //     fullname: 'Name1',
+      //     phone: '0123456789',
+      //     dob: new Date(),
+      //     isActive: true,
+      //     role: Role.ADMIN,
+      //   });
+      //   next();
+      // }
+      // Sử dụng hàm User.findbyPk => Trả về cái User nếu như id trong token là id cua user.
+      // Mock function => mock User.findByPk
       const findUser = await DB.User.findByPk(id);
-      console.log('login user', findUser.dataValues);
-
-      if (findUser.dataValues.isActive == false) next(new HttpException(403, 'This account is disabled!'));
+      console.log('find user', findUser);
+      if (findUser.isActive == false) next(new HttpException(403, 'This account is disabled!'));
 
       if (findUser) {
+        console.log('ODne');
         req.user = findUser;
         next();
       } else {
@@ -61,7 +62,7 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
 
 export const AdminCheckMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   const { user } = req;
-  if (user.getDataValue('role') == Role.ADMIN) {
+  if (user.role == Role.ADMIN) {
     next();
   } else next(new HttpException(403, "Cannot access role admin's resource"));
 };
