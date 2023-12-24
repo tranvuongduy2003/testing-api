@@ -52,6 +52,7 @@
     "@types/express": "^4.17.13",
     "@types/hpp": "^0.2.2",
     "@types/jest": "^28.1.6",
+    "@types/jquery": "^3.5.29",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.45",

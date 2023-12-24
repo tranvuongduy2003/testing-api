@@ -1,19 +1,11 @@
-# NodeJS Version 16
-FROM node:16.18-buster-slim
+FROM node:14
 
-# Copy Dir
-COPY . ./app
-
-# Work to Dir
 WORKDIR /app
 
-# Install Node Package
-RUN npm install --legacy-peer-deps
+COPY package.json .
 
-# Set Env
-ENV NODE_ENV production
+RUN npm install
 
-EXPOSE 8080
+COPY . .
 
-# Cmd script
 CMD ["npm", "run", "dev"]
