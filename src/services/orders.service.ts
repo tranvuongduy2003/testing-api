@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { DB } from '@/database';
+import { DB } from '@database';
 import { CreateOrderDto, UpdateOrderDto } from '@/dtos/orders.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { Order } from '@interfaces/orders.interface';

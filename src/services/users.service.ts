@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcrypt';
 import { Service } from 'typedi';
-import { DB } from '@/database';
+import { DB } from '@database';
 import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { User } from '@interfaces/users.interface';
@@ -19,8 +19,8 @@ export class UserService {
           [
             DB.sequelize.literal(`(
               SELECT COUNT(*)
-              FROM orders as o
-              where
+              FROM orders as o 
+              where 
               o.user_id = UserModel.id
           )`),
             'orderCount',
@@ -29,10 +29,10 @@ export class UserService {
             `(
               SELECT SUM(oi.sum_price)
               FROM orders as o
-              left join order_items oi
-              on oi.order_id = o.id
+              left join order_items oi 
+              on oi.order_id = o.id 
               where o.user_id = UserModel.id
-              group by o.user_id
+              group by o.user_id 
             )`,
             'totalPayment',
           ],

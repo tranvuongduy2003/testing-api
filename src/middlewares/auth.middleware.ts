@@ -1,12 +1,9 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { SECRET_KEY } from '@/config';
-import { DB } from '@/database';
+import { SECRET_KEY } from '@config';
+import { DB } from '@database';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, RequestWithUser, Role, TokenType } from '@interfaces/auth.interface';
-import { NODE_ENV } from '@/config';
-import { UserModel } from '@/models/users.model';
-import bcrypt from 'bcrypt';
 
 const getAuthorization = (req: any) => {
   const header = req.header('Authorization');
@@ -16,6 +13,7 @@ const getAuthorization = (req: any) => {
 };
 
 export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  //Kiem tra token
   //Kiem tra token
   try {
     const Authorization = getAuthorization(req);

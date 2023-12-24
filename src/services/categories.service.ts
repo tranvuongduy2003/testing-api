@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { DB } from '@/database';
+import { DB } from '@database';
 import { CreateCategoriesDto } from '@/dtos/categories.dto';
 import { Categories } from '@/interfaces/categories.interface';
 
