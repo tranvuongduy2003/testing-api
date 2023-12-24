@@ -30,6 +30,7 @@ export class AuthService {
 
   public async login(userData: CreateUserDto): Promise<{ token: TokenPayload; findUser: User }> {
     const findUser: User = await DB.User.findOne({ where: { email: userData.email } });
+    console.log(findUser);
     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
     if (findUser.isActive === false) throw new HttpException(409, `This user was disabled`);
 
