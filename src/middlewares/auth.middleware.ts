@@ -1,12 +1,9 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { SECRET_KEY } from '@/config';
-import { DB } from '@/database';
+import { SECRET_KEY } from '@config';
+import { DB } from '@database';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, RequestWithUser, Role, TokenType } from '@interfaces/auth.interface';
-import { NODE_ENV } from '@/config';
-import { UserModel } from '@/models/users.model';
-import bcrypt from 'bcrypt';
 
 const getAuthorization = (req: any) => {
   const header = req.header('Authorization');
@@ -40,6 +37,7 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
       // }
       // Sử dụng hàm User.findbyPk => Trả về cái User nếu như id trong token là id cua user.
       // Mock function => mock User.findByPk
+
       const findUser = await DB.User.findByPk(id);
       console.log('find user', findUser);
       if (findUser.isActive == false) next(new HttpException(403, 'This account is disabled!'));

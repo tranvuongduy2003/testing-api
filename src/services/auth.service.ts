@@ -1,8 +1,8 @@
 import { compare, hash } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 import { Service } from 'typedi';
-import { SECRET_KEY } from '@/config';
-import { DB } from '@/database';
+import { SECRET_KEY } from '@config';
+import { DB } from '@database';
 import { CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { DataStoredInToken, TokenData, TokenPayload, TokenType } from '@interfaces/auth.interface';

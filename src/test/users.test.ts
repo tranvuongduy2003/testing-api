@@ -4,7 +4,6 @@ import { DB } from '@/database';
 import { Role } from '@/interfaces/auth.interface';
 import { AuthRoute } from '@/routes/auth.route';
 import { UserRoute } from '@/routes/users.route';
-import { match } from 'assert';
 import bcrypt from 'bcrypt';
 import { Sequelize } from 'sequelize';
 import request from 'supertest';
@@ -86,33 +85,18 @@ describe('Testing Users', () => {
       User.findAll = jest.fn().mockReturnValue([
         {
           id: 1,
-          email: 'test1@email.com',
-          password: await bcrypt.hash('123456', 10),
-          fullname: 'Name1',
-          phone: '0829440357',
-          dob: new Date(),
-          isActive: true,
-          role: Role.CUSTOMER,
+          email: 'a@email.com',
+          password: await bcrypt.hash('q1w2e3r4!', 10),
         },
         {
           id: 2,
-          email: 'test2@email.com',
-          password: await bcrypt.hash('123456', 10),
-          fullname: 'Name2',
-          phone: '0829440357',
-          dob: new Date(),
-          isActive: true,
-          role: Role.CUSTOMER,
+          email: 'b@email.com',
+          password: await bcrypt.hash('a1s2d3f4!', 10),
         },
         {
           id: 3,
-          email: 'test3@email.com',
-          password: await bcrypt.hash('123456', 10),
-          fullname: 'Name3',
-          phone: '0829440357',
-          dob: new Date(),
-          isActive: true,
-          role: Role.CUSTOMER,
+          email: 'c@email.com',
+          password: await bcrypt.hash('z1x2c3v4!', 10),
         },
       ]);
 
