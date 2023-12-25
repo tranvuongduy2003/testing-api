@@ -1,6 +1,5 @@
 import { App } from '@/app';
 import { TEST_TOKEN } from '@/config';
-import { DB } from '@/database';
 import { OrderStatus } from '@/interfaces/orders.interface';
 import { OrderRoute } from '@/routes/orders.route';
 import request from 'supertest';
