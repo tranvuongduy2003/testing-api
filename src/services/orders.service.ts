@@ -2,7 +2,7 @@ import { Service } from 'typedi';
 import { DB } from '@database';
 import { CreateOrderDto, UpdateOrderDto } from '@/dtos/orders.dto';
 import { HttpException } from '@/exceptions/httpException';
-import { Order } from '@interfaces/orders.interface';
+import { Order, OrderStatus } from '@interfaces/orders.interface';
 import { OrderItem } from '@/interfaces/order-items.interface';
 
 @Service()
@@ -43,6 +43,9 @@ export class OrderService {
     const t = await DB.sequelize.transaction();
     try {
       const { products, ...rest } = dto;
+      if (!products) {
+        throw new HttpException(400, 'products is required');
+      }
       const createdOrder: Order = await DB.Order.create(
         {
           ...rest,
@@ -80,13 +83,18 @@ export class OrderService {
   }
 
   public async updateOrder(orderId: number, dto: UpdateOrderDto): Promise<Order> {
-    const findOrder: Order = await DB.Order.findByPk(orderId);
-    if (!findOrder) throw new HttpException(409, "Order doesn't exist");
+    try {
+      const findOrder: Order = await DB.Order.findByPk(orderId);
+      if (!findOrder) throw new HttpException(409, "Order doesn't exist");
 
-    await DB.Order.update(dto, { where: { id: orderId } });
+      await DB.Order.update(dto, { where: { id: orderId } });
 
-    const updatedOrder: Order = await DB.Order.findByPk(orderId);
-    return updatedOrder;
+      const updatedOrder: Order = await DB.Order.findByPk(orderId);
+      return updatedOrder;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   // public async deleteOrder(orderId: number): Promise<Order> {
