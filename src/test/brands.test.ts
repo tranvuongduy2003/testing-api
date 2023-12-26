@@ -11,25 +11,25 @@ describe('Testing Brands', () => {
   describe('[GET] /brands', () => {
     it('should return all brands', async () => {
       const brandsRoute = new BrandRoute();
-      const { Brands } = DB;
-
-      Brands.findAll = jest.fn().mockReturnValue([
-        {
-          id: 1,
-          name: 'Brand Test 1',
-        },
-        {
-          id: 2,
-          name: 'Brand Test 2',
-        },
-        {
-          id: 3,
-          name: 'Brand Test 3',
-        },
-      ]);
 
       const app = new App([brandsRoute]);
-      return request(app.getServer()).get(`${brandsRoute.path}`).expect(200);
+      return request(app.getServer())
+        .get(`${brandsRoute.path}`)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(response => {
+          const brands = response.body.data;
+          expect(brands).toEqual(
+            expect.arrayContaining([
+              {
+                id: expect.any(Number),
+                name: expect.any(String),
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
+              },
+            ]),
+          );
+        });
     });
   });
 });

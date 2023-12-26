@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
-import { CreateOrderDto } from '@/dtos/orders.dto';
-import { Order } from '@interfaces/orders.interface';
+import { CreateOrderDto, UpdateOrderDto } from '@/dtos/orders.dto';
+import { Order, OrderStatus } from '@interfaces/orders.interface';
 import { OrderService } from '@/services/orders.service';
 import { RequestWithUser, Role } from '@/interfaces/auth.interface';
 import { HttpException } from '@/exceptions/httpException';
@@ -56,9 +56,9 @@ export class OrderController {
   public updateOrder = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const orderId = Number(req.params.id);
-      const dto: CreateOrderDto = req.body;
+      const dto: UpdateOrderDto = req.body;
 
-      if (req.user.role === Role.CUSTOMER && !this.order.isOrderBelongsToUser(orderId, req.user.id)) {
+      if (req.user.role === Role.CUSTOMER && !(await this.order.isOrderBelongsToUser(orderId, req.user.id))) {
         throw new HttpException(404, "Order doesn't exist");
       }
 
