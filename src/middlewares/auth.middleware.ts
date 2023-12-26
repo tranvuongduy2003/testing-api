@@ -14,6 +14,7 @@ const getAuthorization = (req: any) => {
 
 export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   //Kiem tra token
+  //Kiem tra token
   try {
     const Authorization = getAuthorization(req);
     if (Authorization) {
@@ -37,7 +38,6 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
       // }
       // Sử dụng hàm User.findbyPk => Trả về cái User nếu như id trong token là id cua user.
       // Mock function => mock User.findByPk
-
       const findUser = await DB.User.findByPk(id);
       console.log('find user', findUser);
       if (findUser.isActive == false) next(new HttpException(403, 'This account is disabled!'));
