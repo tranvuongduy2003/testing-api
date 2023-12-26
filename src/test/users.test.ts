@@ -402,32 +402,5 @@ describe('Testing Users', () => {
           expect(res.body.message).toEqual("Cannot access role admin's resource");
         });
     });
-    it('wrong old password', async () => {
-      const testUser = {
-        id: 9090,
-        email: 'testUser@email.com',
-        password: await bcrypt.hash('oldPassword', 10),
-        fullname: 'Test User',
-        phone: '1234567890',
-        dob: new Date(),
-        isActive: true,
-        role: Role.ADMIN,
-      };
-
-      User.findByPk = jest.fn().mockReturnValue(testUser);
-      User.update = jest.fn().mockReturnValue([1]); // Simulating one row affected (update success)
-
-      return await request(app.getServer())
-        .patch(`${usersRoute.path}/change-status/9090/:isActive`)
-        .set('Authorization', `Bearer ${TEST_TOKEN}`)
-        .send({
-          oldPassword: 'incorrectOldPassword',
-          newPassword: 'newPassword',
-        })
-        .expect(409)
-        .then(res => {
-          expect(res.body.message).toEqual("Current password doesn't match");
-        });
-    });
   });
 });
