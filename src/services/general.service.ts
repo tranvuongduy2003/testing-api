@@ -76,7 +76,7 @@ export class GeneralService {
         [Op.lt]: new Date(),
         [Op.gt]: sevenDaysAgo,
       }),
-      group: ['Date', 'category_id'],
+      group: ['Date', 'category_id', 'ProductModel.id'],
     });
 
     return orderItems;
@@ -93,8 +93,8 @@ export class GeneralService {
         include: [
           [
             DB.sequelize.literal(`
-            (SELECT SUM(sum_price) 
-            FROM order_items 
+            (SELECT SUM(sum_price)
+            FROM order_items
             WHERE order_items.order_id = OrderModel.id)
           `),
             'totalPrice',

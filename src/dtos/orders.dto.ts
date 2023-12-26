@@ -30,19 +30,6 @@ export class CreateOrderDto {
 }
 
 export class UpdateOrderDto {
-  @IsString()
-  @IsOptional()
-  public receiptAddress?: string;
-
-  @IsString()
-  @IsOptional()
-  public receiptName?: string;
-
-  @IsString()
-  @IsOptional()
-  public receiptPhone?: string;
-
   @IsEnum(OrderStatus)
-  @IsOptional()
-  public status?: OrderStatus;
+  public status: OrderStatus;
 }
