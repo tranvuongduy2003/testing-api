@@ -13,7 +13,7 @@ afterAll(async () => {
 });
 
 describe('Testing Auth', () => {
-    describe('[POST] /signup', () => {
+    describe('[POST] /auth/signup', () => {
         afterEach(() => {
             jest.clearAllMocks();
           });
@@ -36,7 +36,38 @@ describe('Testing Auth', () => {
             const app = new App([authRoute])
             return request(app.getServer()).post(`${authRoute.path}/signup` ).send(userData).expect(201).then(res => {
                 expect(res.body.message).toEqual('signup')
+                const user = res.body.data;
+                expect(user).toEqual({
+                    email: 'newuser@example.com',
+                    password: 'password123',
+                    fullname: 'New User',
+                    phone: '0123456789',
+                    dob: expect.any(String),
+                    role: "CUSTOMER",
+                    isActive: true
+                })
             })
+        }),
+        it('Should throw exception with empty data', async () => {
+            const authRoute = new AuthRoute();
+            const { User } = DB;
+            const userData = {
+                email: null,
+                password: null,
+                fullname: null,
+                phone: null,
+                dob: null,
+                role: null,
+              };
+
+              const app = new App([authRoute])
+                return request(app.getServer())
+                .post(`${authRoute.path}/signup`)
+                .send(userData)
+                .expect(400)
+                .then(res => {
+                    expect(res.body.message).toEqual('email must be an email, password must be shorter than or equal to 32 characters,password must be longer than or equal to 8 characters,password should not be empty,password must be a string')
+                })
         }),
         it('should throw HttpException when email is already in use', async () => {
             const authRoute = new AuthRoute();
@@ -67,7 +98,8 @@ describe('Testing Auth', () => {
             }); 
         })
     }),
-    describe('[POST] /login', () => {
+
+    describe('[POST] /auth/login', () => {
         it('Should login with valid data and active account', async () => {
             const authRoute = new AuthRoute();
             const { User } = DB;
@@ -92,6 +124,25 @@ describe('Testing Auth', () => {
             expect(res.body.message).toEqual('login')
         })
         }),
+
+        it('Should throw exception with empty data', async () => {
+            const authRoute = new AuthRoute();
+            const { User } = DB;
+            const userData = {
+                email: null,
+                password: null,
+              };
+
+              const app = new App([authRoute])
+                return request(app.getServer())
+                .post(`${authRoute.path}/login`)
+                .send(userData)
+                .expect(400)
+                .then(res => {
+                    expect(res.body.message).toEqual('email must be an email, password must be a string')
+                })
+        }),
+
         it('Should not login with disabled account', async () => {
             const authRoute = new AuthRoute();
             const { User } = DB;
@@ -116,7 +167,26 @@ describe('Testing Auth', () => {
             expect(res.body.message).toEqual('This user was disabled')
         })
         }),
-        it('Should not login with disabled account', async () => {
+
+        it('Should not login with wrong email', async () => {
+            const authRoute = new AuthRoute();
+            const { User } = DB;
+
+            const userData = {
+                email: 'wronguser@example.com',
+                password: 'password123',
+            }
+
+            User.findOne = jest.fn().mockReturnValue(null)
+
+        
+        const app = new App([authRoute])
+        return request(app.getServer()).post(`${authRoute.path}/login/` ).send(userData).expect(409).then(res => {
+            expect(res.body.message).toEqual(`This email ${userData.email} was not found`)
+        })
+        })
+
+        it('Should not login with wrong password', async () => {
             const authRoute = new AuthRoute();
             const { User } = DB;
 
@@ -141,6 +211,4 @@ describe('Testing Auth', () => {
         })
         })
     })
-    // describe('[POST] /refresh', async () => {
-    // })
 })
