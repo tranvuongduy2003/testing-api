@@ -60,6 +60,7 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
 
 export const AdminCheckMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   const { user } = req;
+  console.log("USER DAY NE:", user)
   if (user.role == Role.ADMIN) {
     next();
   } else next(new HttpException(403, "Cannot access role admin's resource"));

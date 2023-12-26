@@ -18,7 +18,7 @@ export class ProductRoute implements Routes {
     this.router.get(`${this.path}`, this.product.getProducts);
     this.router.get(`${this.path}/search`, this.product.searchProducts);
     this.router.get(`${this.path}/:id(\\d+)`, this.product.getProductById);
-    this.router.post(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(CreateProductDto, true), this.product.createProduct);
+    this.router.post(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(CreateProductDto), this.product.createProduct);
     this.router.put(
       `${this.path}/:id(\\d+)`,
       AuthMiddleware,

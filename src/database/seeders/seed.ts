@@ -83,19 +83,6 @@ class Seeder {
       const { users } = this.seedingAmount;
       const creationPromises: Promise<User>[] = [];
 
-      for (let i = 0; i < users; i++) {
-        const newUser: CreateUserDto = {
-          fullname: faker.person.fullName(),
-          email: faker.internet.email(),
-          password: '123456',
-          phone: faker.phone.number('+84 ## ### ## ##'),
-          dob: faker.date.past(),
-          role: i == 0 ? Role.ADMIN : Role.CUSTOMER,
-        };
-
-        creationPromises.push(this.userService.createUser(newUser));
-      }
-
       creationPromises.push(
         this.userService.createUser({
           fullname: faker.person.fullName(),
@@ -128,6 +115,19 @@ class Seeder {
           role: Role.DELIVERER,
         }),
       );
+
+      for (let i = 0; i < users; i++) {
+        const newUser: CreateUserDto = {
+          fullname: faker.person.fullName(),
+          email: faker.internet.email(),
+          password: '123456',
+          phone: faker.phone.number('+84 ## ### ## ##'),
+          dob: faker.date.past(),
+          role: i == 0 ? Role.ADMIN : Role.CUSTOMER,
+        };
+
+        creationPromises.push(this.userService.createUser(newUser));
+      }
 
       await Promise.all(creationPromises);
       logger.info('User seeding successfully!');
