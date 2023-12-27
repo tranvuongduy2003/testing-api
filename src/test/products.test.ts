@@ -527,5 +527,76 @@ describe('Testing products', () => {
             expect(response.body.message).toEqual('name should not be empty, desc should not be empty, price must be a number conforming to the specified constraints, categoryId must be a number conforming to the specified constraints, sold must be a number conforming to the specified constraints, images must be an array, inventory must be a number conforming to the specified constraints');
           });
       })
-})
+}),
+  describe('[DELETE] /products/:id', () => {
+    it('Should delete existed product', async () => {
+      const productRoute = new ProductRoute()
+      const { Product } = DB 
+
+      Product.findByPk = jest.fn().mockReturnValue({
+        id: 1,
+        name: "Product",
+        desc: "Desc",
+        price: 1,
+        importPrice: 1,
+        brandId: 1,
+        categoryId: 1,
+        inventory: 1,
+        sold: 1,
+        images: ["image1", "image2"],
+      })
+      Product.destroy = jest.fn().mockReturnValue({
+        id: 1,
+        name: "Product",
+        desc: "Desc",
+        price: 1,
+        importPrice: 1,
+        brandId: 1,
+        categoryId: 1,
+        inventory: 1,
+        sold: 1,
+        images: ["image1", "image2"],
+      })
+
+      const app = new App([productRoute]);
+          return request(app.getServer())
+          .delete(`${productRoute.path}/1`)
+          .set('Authorization', `Bearer ${TEST_TOKEN}`)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .then(response => {
+              expect(response.body.message).toEqual('deleted');
+              const products = response.body.data;
+              expect(products).toEqual({
+                  id: 1,
+                  name: "Product",
+                  desc: "Desc",
+                  price: 1,
+                  importPrice: 1,
+                  brandId: 1,
+                  categoryId: 1,
+                  inventory: 1,
+                  sold: 1,
+                  images: ["image1", "image2"],
+              }
+              );
+            });
+    }),
+    it('Should not delete non-existed product', async () => {
+      const productRoute = new ProductRoute()
+      const { Product } = DB 
+
+      Product.findByPk = jest.fn().mockReturnValue(null)
+      const app = new App([productRoute]);
+          return request(app.getServer())
+          .delete(`${productRoute.path}/1`)
+          .set('Authorization', `Bearer ${TEST_TOKEN}`)
+          .expect('Content-Type', /json/)
+          .expect(409)
+          .then(response => {
+              expect(response.body.message).toEqual('Product doesn\'t exist');
+            });
+    })
+    
+  })
 })
