@@ -21,6 +21,7 @@ describe('Testing Orders', () => {
         .expect(200)
         .then(response => {
           const orders = response.body.data;
+          expect(response.body.message).toEqual('findAll');
           expect(orders).toEqual(
             expect.arrayContaining([
               {
@@ -75,7 +76,7 @@ describe('Testing Orders', () => {
         .expect(201)
         .then(response => {
           const createdOrder = response.body.data;
-
+          expect(response.body.message).toEqual('created');
           expect(createdOrder).toEqual(
             expect.objectContaining({
               id: expect.any(Number),
@@ -217,7 +218,7 @@ describe('Testing Orders', () => {
         status: OrderStatus.DELIVERED,
       };
 
-      request(app.getServer())
+      await request(app.getServer())
         .put(`${ordersRoute.path}/${createdOrder.id}`)
         .set('Authorization', `Bearer ${TEST_TOKEN}`)
         .send(updatePayload)
@@ -225,7 +226,7 @@ describe('Testing Orders', () => {
         .expect(200)
         .then(response => {
           const updatedOrder = response.body.data;
-
+          expect(response.body.message).toEqual('updated');
           expect(updatedOrder).toEqual(
             expect.objectContaining({
               id: expect.any(Number),
@@ -283,7 +284,7 @@ describe('Testing Orders', () => {
 
       const createdOrder = createOrderResponse.body.data;
 
-      request(app.getServer())
+      await request(app.getServer())
         .put(`${ordersRoute.path}/${createdOrder.id}`)
         .set('Authorization', `Bearer ${TEST_TOKEN}`)
         .send({})
@@ -321,7 +322,7 @@ describe('Testing Orders', () => {
         status: 'Order Status',
       };
 
-      request(app.getServer())
+      await request(app.getServer())
         .put(`${ordersRoute.path}/${createdOrder.id}`)
         .set('Authorization', `Bearer ${TEST_TOKEN}`)
         .send(updatePayload)
