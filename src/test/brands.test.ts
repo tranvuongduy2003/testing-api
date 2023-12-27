@@ -1,5 +1,4 @@
 import { App } from '@/app';
-import { DB } from '@/database';
 import { BrandRoute } from '@/routes/brands.route';
 import request from 'supertest';
 

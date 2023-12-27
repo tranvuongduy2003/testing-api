@@ -1,6 +1,5 @@
 import { App } from '@/app';
 import { TEST_TOKEN } from '@/config';
-import { DB } from '@/database';
 import { GeneralRoute } from '@/routes/general.route';
 import request from 'supertest';
 
@@ -21,6 +20,7 @@ describe('Testing general', () => {
         .expect(200)
         .then(response => {
           const general = response.body.data;
+          expect(response.body.message).toEqual('getStatistics');
           expect(general).toEqual(
             expect.objectContaining({
               totalProducts: expect.any(Number),
@@ -56,6 +56,7 @@ describe('Testing general', () => {
         .expect(200)
         .then(response => {
           const revenue = response.body.data;
+          expect(response.body.message).toEqual('getRevenueByCategory');
           expect(revenue).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -81,6 +82,7 @@ describe('Testing general', () => {
         .expect(200)
         .then(response => {
           const orders = response.body.data;
+          expect(response.body.message).toEqual('getOrderInTimeline');
           for (const [key, value] of Object.entries(orders)) {
             expect(key).toEqual(expect.any(String));
             expect(value).toEqual(
