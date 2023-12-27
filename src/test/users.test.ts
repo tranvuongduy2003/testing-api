@@ -4,7 +4,6 @@ import { DB } from '@/database';
 import { Role } from '@/interfaces/auth.interface';
 import { AuthRoute } from '@/routes/auth.route';
 import { UserRoute } from '@/routes/users.route';
-import { match } from 'assert';
 import bcrypt from 'bcrypt';
 import { Sequelize } from 'sequelize';
 import request from 'supertest';
