@@ -3,10 +3,18 @@ import { DB } from '@/database';
 import { AuthRoute } from '@/routes/auth.route';
 import bcrypt from 'bcrypt'; // Import phương thức hash từ bcrypt
 import request from 'supertest';
+import { Container } from 'typedi';
+import { AuthService } from '@services/auth.service';
+
 import { Role } from './../interfaces/auth.interface';
+
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
+});
+
+afterEach(() => {
+  jest.resetAllMocks();
 });
 
 describe('Testing Auth', () => {

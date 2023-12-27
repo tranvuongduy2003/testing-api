@@ -19,6 +19,66 @@ describe('Testing Users', () => {
   const authRoute = new AuthRoute();
   const app = new App([usersRoute, authRoute]);
   const { User } = DB;
+
+  describe('[PUT] /users/profile', () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+    it('invalid token', async () => {
+      return await request(app.getServer()).put(`${usersRoute.path}/profile`).set('Authorization', 'Bearer knacjasknc').expect(401);
+    });
+
+    it('requirements passed && valid format', async () => {
+      // Step 1: Create a testing user
+      return await request(app.getServer())
+        .put(`${usersRoute.path}/profile`)
+        .set('Authorization', `Bearer ${TEST_TOKEN}`)
+        .send({ fullname: 'A new Name', phone: '12323123123123' })
+        .expect(200)
+        .then(res => {
+          expect(res.body.message).toEqual('profile updated');
+        });
+    });
+  });
+
+  describe('[PATCH] /users/change-password', () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+    it('the old password is not right', async () => {
+      User.create = jest.fn().mockReturnValue({
+        id: 12,
+        email: 'testUser@email.com',
+        password: await bcrypt.hash('password', 10),
+        fullname: 'Test User',
+        phone: '1234567890',
+        dob: new Date(),
+        isActive: true,
+        role: Role.CUSTOMER,
+      });
+
+      return await request(app.getServer())
+        .patch(`${usersRoute.path}/change-password`)
+        .set('Authorization', `Bearer ${TEST_TOKEN}`)
+        .send({ oldPassword: 'wrongPass', newPassword: 'okokokokoko' })
+        .expect(409)
+        .then(res => {
+          expect(res.body.message).toEqual(`Current password doesn't match`);
+        });
+    });
+
+    it('requirements passed && valid format', async () => {
+      return await request(app.getServer())
+        .patch(`${usersRoute.path}/change-password`)
+        .set('Authorization', `Bearer ${TEST_TOKEN}`)
+        .send({ newPassword: 'Customer*123', oldPassword: 'okokok1212121' })
+        .expect(200)
+        .then(res => {
+          expect(res.body.message).toEqual('password updated');
+        });
+    });
+  });
+
   describe('[GET] /users', () => {
     // Loại bỏ các mock function đã khởi tạo sau mỗi test case.
     // Nếu không loại bỏ các mock function luôn tồn tại làm ảnh hưởng đến những test case khác.
@@ -417,31 +477,28 @@ describe('Testing Users', () => {
           expect(res.body.message).toEqual("Cannot access role admin's resource");
         });
     });
-    it('wrong old password', async () => {
+    it('requirements passed && valid format', async () => {
+      // Step 1: Create a testing user
       const testUser = {
-        id: 9090,
+        id: 1818,
         email: 'testUser@email.com',
-        password: await bcrypt.hash('oldPassword', 10),
+        password: 'password',
         fullname: 'Test User',
         phone: '1234567890',
         dob: new Date(),
         isActive: true,
         role: Role.ADMIN,
       };
-
       User.findByPk = jest.fn().mockReturnValue(testUser);
-      User.update = jest.fn().mockReturnValue([1]); // Simulating one row affected (update success)
+      User.update = jest.fn().mockReturnValue(1);
 
       return await request(app.getServer())
-        .patch(`${usersRoute.path}/change-status/9090/:isActive`)
+        .patch(`${usersRoute.path}/change-status/1818/:isActive`)
         .set('Authorization', `Bearer ${TEST_TOKEN}`)
-        .send({
-          oldPassword: 'incorrectOldPassword',
-          newPassword: 'newPassword',
-        })
-        .expect(409)
+        .send({ isActive: false })
+        .expect(200)
         .then(res => {
-          expect(res.body.message).toEqual("Current password doesn't match");
+          expect(res.body.message).toEqual('user status updated');
         });
     });
   });
